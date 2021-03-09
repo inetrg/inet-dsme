@@ -50,7 +50,7 @@
 
 #include <inet/linklayer/base/MacProtocolBase.h>
 #include <inet/linklayer/contract/IMacProtocol.h>
-#include <inet/physicallayer/contract/packetlevel/IRadio.h>
+#include <inet/physicallayer/wireless/common/contract/packetlevel/IRadio.h>
 
 #include "DSMEMessage.h"
 #include "dsme_settings.h"

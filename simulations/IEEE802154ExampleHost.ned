@@ -21,10 +21,10 @@ package inet_dsme.simulations;
 
 import inet.linklayer.ieee802154.Ieee802154NarrowbandInterface;
 import inet.node.inet.WirelessHost;
-import inet.physicallayer.ieee802154.packetlevel.Ieee802154NarrowbandScalarRadio;
+import inet.physicallayer.wireless.ieee802154.packetlevel.Ieee802154NarrowbandScalarRadio;
 
 import inet_dsme.applications.generic.PRRTrafGen;
-import inet_dsme.routing.gpsr.SP_GPSR;
+import inet.routing.gpsr.Gpsr;
 
 //
 // A wireless host containing a WirelessInterface, GPSR and a PRRTrafGen.
@@ -51,7 +51,7 @@ module IEEE802154ExampleHost extends WirelessHost
         wlan[*].radio.typename = default("Ieee802154NarrowbandScalarRadio");
 
     submodules:
-        gpsr: SP_GPSR if hasGpsr {
+        gpsr: Gpsr if hasGpsr {
             parameters:
                 @display("p=739,339");
                 routingTableModule = "^.generic.routingTable";

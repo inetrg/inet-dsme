@@ -19,7 +19,7 @@
 package inet_dsme.simulations;
 
 import inet.networklayer.configurator.nexthop.NextHopNetworkConfigurator;
-import inet.physicallayer.ieee802154.packetlevel.Ieee802154NarrowbandScalarRadioMedium;
+import inet.physicallayer.wireless.ieee802154.packetlevel.Ieee802154NarrowbandScalarRadioMedium;
 
 network Net802154
 {

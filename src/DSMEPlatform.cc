@@ -11,9 +11,9 @@
 #include <inet/common/ProtocolTag_m.h>
 #include <inet/common/ProtocolGroup.h>
 #include <inet/common/packet/chunk/ByteCountChunk.h>
-#include <inet/physicallayer/base/packetlevel/FlatRadioBase.h>
-#include <inet/physicallayer/contract/packetlevel/SignalTag_m.h>
-#include <inet/physicallayer/contract/packetlevel/IRadio.h>
+#include <inet/physicallayer/wireless/common/base/packetlevel/FlatRadioBase.h>
+#include <inet/physicallayer/wireless/common/contract/packetlevel/SignalTag_m.h>
+#include <inet/physicallayer/wireless/common/contract/packetlevel/IRadio.h>
 
 #include "openDSME/dsmeLayer/DSMELayer.h"
 #include "openDSME/dsmeLayer/messages/MACCommand.h"
@@ -121,8 +121,8 @@ DSMEPlatform::~DSMEPlatform() {
 
 /****** INET ******/
 
-void DSMEPlatform::configureInterfaceEntry() {
-    InterfaceEntry *e = getContainingNicModule(this);
+void DSMEPlatform::configureNetworkInterface() {
+    NetworkInterface *e = getContainingNicModule(this);
 
     // data rate
     e->setDatarate(bitrate);
@@ -333,7 +333,7 @@ void DSMEPlatform::handleLowerPacket(inet::Packet* packet) {
 }
 
 void DSMEPlatform::handleUpperPacket(inet::Packet* packet) {
-    if (auto *tag = packet->findTag<inet::PacketProtocolTag>()) {
+    if (auto tag = packet->findTag<inet::PacketProtocolTag>()) {
         /* 'Smuggle' protocol information across lower layers via par() */
         auto protocol = tag->getProtocol();
         auto protocolId = inet::ProtocolGroup::ethertype.getProtocolNumber(protocol);
@@ -490,7 +490,7 @@ bool DSMEPlatform::prepareSendingCopy(IDSMEMessage* msg, Delegate<void(bool)> tx
             CommandFrameIdentifier cmd = (CommandFrameIdentifier)message->packet->peekDataAsBytes()->getByte(0);
             if(cmd == CommandFrameIdentifier::DSME_GTS_REQUEST || cmd == CommandFrameIdentifier::DSME_GTS_REPLY || cmd == CommandFrameIdentifier::DSME_GTS_NOTIFY) {
                 LOG_INFO("Command frame transmitted with creation time " << (long)msg->getHeader().getCreationTime() << " and dwell time " << (long)(getSymbolCounter() - msg->getHeader().getCreationTime()));
-                emit(commandFrameDwellTime, getSymbolCounter() - msg->getHeader().getCreationTime());
+                emit(commandFrameDwellTime, (int) (getSymbolCounter() - msg->getHeader().getCreationTime()));
                 DSME_ASSERT(msg->getHeader().getCreationTime() > 0);
             }
             emit(commandSentDown, packet);
@@ -699,7 +699,7 @@ void DSMEPlatform::handleIndicationFromMCPS(IDSMEMessage* msg) {
     inet::MacAddress address;
     translateMacAddress(dsmeMessage->getHeader().getSrcAddr(), address);
     packet->addTagIfAbsent<MacAddressInd>()->setSrcAddress(address);
-    packet->addTagIfAbsent<InterfaceInd>()->setInterfaceId(interfaceEntry->getInterfaceId());
+    packet->addTagIfAbsent<InterfaceInd>()->setInterfaceId(networkInterface->getInterfaceId());
 
     releaseMessage(msg);
 
@@ -901,15 +901,15 @@ void DSMEPlatform::signalGTSChange(bool deallocation, IEEE802154MacAddress count
 }
 
 void DSMEPlatform::signalQueueLength(uint32_t length) {
-    emit(queueLength, length);
+    emit(queueLength, (int) length);
 }
 
+
 void DSMEPlatform::signalPacketsTXPerSlot(uint32_t packets) {
-    emit(packetsTXPerSlot, packets);
+    emit(packetsTXPerSlot, (int) packets);
 }
 
 void DSMEPlatform::signalPacketsRXPerSlot(uint32_t packets) {
-    emit(packetsRXPerSlot, packets);
+    emit(packetsRXPerSlot, (int) packets);
 }
-
 }

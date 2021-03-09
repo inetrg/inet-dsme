@@ -50,7 +50,7 @@
 
 #include <inet/linklayer/base/MacProtocolBase.h>
 #include <inet/linklayer/contract/IMacProtocol.h>
-#include <inet/physicallayer/contract/packetlevel/IRadio.h>
+#include <inet/physicallayer/wireless/common/contract/packetlevel/IRadio.h>
 
 #include "DSMEMessage.h"
 #include "dsme_settings.h"
@@ -72,16 +72,16 @@ class DSMEPlatform : public inet::MacProtocolBase, public inet::IMacProtocol, pu
     using omnetpp::cIListener::finish;
     using omnetpp::cSimpleModule::send;
 
+protected:
+    /****** INET ******/
+
+    virtual void configureNetworkInterface() override;
 public:
     DSMEPlatform();
     virtual ~DSMEPlatform();
 
     DSMEPlatform(const DSMEPlatform&) = delete;
     DSMEPlatform& operator=(const DSMEPlatform&) = delete;
-
-    /****** INET ******/
-
-    virtual void configureInterfaceEntry() override;
 
     /****** OMNeT++ ******/
 
@@ -101,7 +101,7 @@ public:
     virtual void handleSelfMessage(omnetpp::cMessage*) override;
 
     /** @brief Handle control messages from lower layer */
-    virtual void receiveSignal(cComponent *source, omnetpp::simsignal_t signalID, intval_t l, cObject *details) override;
+    virtual void receiveSignal(cComponent *source, omnetpp::simsignal_t signalID, inet::intval_t l, cObject *details) override;
 
     /****** IDSMERadio ******/
 
@@ -150,9 +150,9 @@ public:
 
     virtual void signalQueueLength(uint32_t length) override;
 
-    virtual void signalPacketsTXPerSlot(uint32_t packets) override;
+    virtual void signalPacketsTXPerSlot(uint32_t packets);
 
-    virtual void signalPacketsRXPerSlot(uint32_t packets) override;
+    virtual void signalPacketsRXPerSlot(uint32_t packets);
 
 private:
     DSMEMessage* getLoadedMessage(inet::Packet*);

@@ -11,9 +11,9 @@
 #include <inet/common/ProtocolTag_m.h>
 #include <inet/common/ProtocolGroup.h>
 #include <inet/common/packet/chunk/ByteCountChunk.h>
-#include <inet/physicallayer/base/packetlevel/FlatRadioBase.h>
-#include <inet/physicallayer/contract/packetlevel/SignalTag_m.h>
-#include <inet/physicallayer/contract/packetlevel/IRadio.h>
+#include <inet/physicallayer/wireless/common/base/packetlevel/FlatRadioBase.h>
+#include <inet/physicallayer/wireless/common/contract/packetlevel/SignalTag_m.h>
+#include <inet/physicallayer/wireless/common/contract/packetlevel/IRadio.h>
 
 #include "openDSME/dsmeLayer/DSMELayer.h"
 #include "openDSME/dsmeLayer/messages/MACCommand.h"
