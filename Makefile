@@ -9,9 +9,18 @@ cleanall: checkmakefiles
 	cd src && $(MAKE) MODE=debug clean
 	rm -f src/Makefile
 
+OPP_MAKEMAKE_ARGS = -f --deep -KINET_PROJ=../../inet -DINET_IMPORT -I. -I$$\(INET_PROJ\)/src -L$$\(INET_PROJ\)/src -lINET$$\(D\)
+
 INET_PROJ=../inet
+
+BUILD_LIB ?= 0
+
+ifneq (0, $(BUILD_LIB))
+  OPP_MAKEMAKE_ARGS += -s
+endif
+
 makefiles:
-	@cd src && opp_makemake -f --deep -KINET_PROJ=../../inet -DINET_IMPORT -I. -I$$\(INET_PROJ\)/src -L$$\(INET_PROJ\)/src -lINET$$\(D\)
+	@cd src && opp_makemake $(OPP_MAKEMAKE_ARGS)
 
 checkmakefiles:
 	@if [ ! -f src/Makefile ]; then \
