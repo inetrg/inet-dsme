@@ -74,7 +74,11 @@ constexpr uint16_t CAP_QUEUE_SIZE = 8;
 constexpr uint16_t TOTAL_GTS_QUEUE_SIZE = 30 - CAP_QUEUE_SIZE;
 constexpr uint16_t UPPER_LAYER_QUEUE_SIZE = 12;
 constexpr uint16_t MSG_POOL_SIZE = CAP_QUEUE_SIZE + TOTAL_GTS_QUEUE_SIZE + 2 * UPPER_LAYER_QUEUE_SIZE + 10;
+#ifdef INET_DSME_VANILLA
 constexpr uint8_t ADDITIONAL_ACK_WAIT_DURATION = 0;
+#else
+constexpr uint8_t ADDITIONAL_ACK_WAIT_DURATION = 26;
+#endif
 }
 
 #endif
