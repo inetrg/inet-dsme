@@ -40,3 +40,7 @@ results/
 
 # ELF
 simulations/core
+
+# Others
+.cmdenv-log
+.qtenvrc
