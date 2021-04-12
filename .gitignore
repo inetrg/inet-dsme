@@ -27,7 +27,7 @@
 *.exe
 *.out
 *.app
-src/inet-dsme
+src/inet-dsme*
 
 # Make
 Makefile
