@@ -18,7 +18,7 @@ ifneq (0, $(LORA_OMNETPP))
   OPP_MAKEMAKE_ARGS += -o inet-dsme_lora_omnetpp -KCFLAGS_EXTRA=-DLORA_SYMBOL_TIME
 endif
 
-OPP_RUN_ARGS += -r $(RUN) --seed-set=$(REP) --repeat=1 --vector-recording=$(VECTOR_RECORDING) $(OMNETPP_EXTRA_ARGS) -c $(CONFIG) -n .:../src:../../inet/examples:../../inet/src:../../inet/tutorials:.:../src -l ../../inet/src/INET -l ../src/inet-dsme -l ../../inet/src/INET -l ../src/inet-dsme -l ../../inet/src/INET -l ../src/inet-dsme --debug-on-errors=false example.ini
+OPP_RUN_ARGS += -r $(RUN) --seed-set=$(REP) --repeat=1 --vector-recording=$(VECTOR_RECORDING) $(OMNETPP_EXTRA_ARGS) -c $(CONFIG) -n .:../src:../../inet/examples:../../inet/src:../../inet/tutorials:.:../src -l ../../inet/src/INET --debug-on-errors=false example.ini
 
 
 all: checkmakefiles
