@@ -1,14 +1,3 @@
-all: checkmakefiles
-	cd src && $(MAKE)
-
-clean: checkmakefiles
-	cd src && $(MAKE) clean
-
-cleanall: checkmakefiles
-	cd src && $(MAKE) MODE=release clean
-	cd src && $(MAKE) MODE=debug clean
-	rm -f src/Makefile
-
 INET_PATH ?= ../../inet
 
 OPP_MAKEMAKE_ARGS = -f --deep -KINET_PROJ=$(INET_PATH) -DINET_IMPORT -I. -I$$\(INET_PROJ\)/src -L$$\(INET_PROJ\)/src -lINET$$\(D\)
@@ -25,18 +14,32 @@ ifneq (0, $(CMDENV))
   endif
 endif
 
+ifneq (0, $(LORA_OMNETPP))
+  OPP_MAKEMAKE_ARGS += -o inet-dsme_lora_omnetpp -KCFLAGS_EXTRA=-DLORA_SYMBOL_TIME
+endif
+
 OPP_RUN_ARGS += -r $(RUN) --seed-set=$(REP) --repeat=1 --vector-recording=$(VECTOR_RECORDING) $(OMNETPP_EXTRA_ARGS) -c $(CONFIG) -n .:../src:../../inet/examples:../../inet/src:../../inet/tutorials:.:../src -l ../../inet/src/INET -l ../src/inet-dsme -l ../../inet/src/INET -l ../src/inet-dsme -l ../../inet/src/INET -l ../src/inet-dsme --debug-on-errors=false example.ini
 
-ifneq (0, $(LORA_OMNETPP))
-  CFLAGS_EXTRA += -DLORA_SYMBOL_TIME
-  OPP_MAKEMAKE_ARGS += -o inet-dsme_lora_omnetpp
-endif
+
+all: checkmakefiles
+	cd src && $(MAKE)
+
+clean: checkmakefiles
+	cd src && $(MAKE) clean
+
+cleanall: checkmakefiles
+	cd src && $(MAKE) MODE=release clean
+	cd src && $(MAKE) MODE=debug clean
+	rm -f src/Makefile
 
 makefiles:
 	@cd src && opp_makemake $(OPP_MAKEMAKE_ARGS)
 
 makefiles-lib:
 	@cd src && opp_makemake $(OPP_MAKEMAKE_ARGS) -s
+
+makefiles-static-lib:
+	@cd src && opp_makemake $(OPP_MAKEMAKE_ARGS) -a
 
 CONFIG ?= DSME
 RUN ?= 0

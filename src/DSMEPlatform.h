@@ -154,7 +154,7 @@ public:
 
     virtual void signalPacketsRXPerSlot(uint32_t packets);
 
-private:
+protected:
     DSMEMessage* getLoadedMessage(inet::Packet*);
 
     void handleIndicationFromMCPS(IDSMEMessage* msg);
@@ -225,6 +225,8 @@ public:
     IEEE802154MacAddress& getAddress() {
         return this->mac_pib.macExtendedAddress;
     }
+
+    bool getTransceiverIsOn() const { return transceiverIsOn; }
 
 private:
     GTSScheduling* scheduling = nullptr;
