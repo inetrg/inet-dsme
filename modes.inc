@@ -5,7 +5,6 @@ ALL_MODES = release debug sanitize lora_omnetpp lora_omnetpp_debug
 MODE = release
 ifeq ($(MODE),release)
   CFLAGS = $(CFLAGS_RELEASE)
-  $(info $(LIB_PREFIX))
   D=
 else ifeq ($(MODE),debug)
   CFLAGS = $(CFLAGS_DEBUG)
