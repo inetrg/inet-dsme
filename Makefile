@@ -1,8 +1,6 @@
 INET_PATH ?= ../../inet
 
-OPP_MAKEMAKE_ARGS = -f --deep -KINET_PROJ=$(INET_PATH) -DINET_IMPORT -I. -I$$\(INET_PROJ\)/src -L$$\(INET_PROJ\)/src -lINET$$\(D\)
-
-LORA_OMNETPP ?= 0
+OPP_MAKEMAKE_ARGS = -f --deep -KINET_PROJ=$(INET_PATH) -DINET_IMPORT -I. -I$$\(INET_PROJ\)/src -L$$\(INET_PROJ\)/src -lINET$$\(D\) -KOMNETPP_CONFIGFILE=../../common/Makefile.inc -KMODESFILE=../modes.inc
 
 CMDENV ?= 0
 VERBOSE ?= 0
@@ -12,10 +10,6 @@ ifneq (0, $(CMDENV))
   ifneq (0, $(VERBOSE))
     OMNETPP_EXTRA_ARGS += --cmdenv-express-mode=false
   endif
-endif
-
-ifneq (0, $(LORA_OMNETPP))
-  OPP_MAKEMAKE_ARGS += -o inet-dsme_lora_omnetpp -KCFLAGS_EXTRA=-DLORA_SYMBOL_TIME
 endif
 
 OPP_RUN_ARGS += -r $(RUN) --seed-set=$(REP) --repeat=1 --vector-recording=$(VECTOR_RECORDING) $(OMNETPP_EXTRA_ARGS) -c $(CONFIG) -n .:../src:../../inet/examples:../../inet/src:../../inet/tutorials:.:../src -l ../../inet/src/INET --debug-on-errors=false example.ini
@@ -30,6 +24,8 @@ clean: checkmakefiles
 cleanall: checkmakefiles
 	cd src && $(MAKE) MODE=release clean
 	cd src && $(MAKE) MODE=debug clean
+	cd src && $(MAKE) MODE=lora_omnetpp clean
+	cd src && $(MAKE) MODE=lora_omnetpp_debug clean
 	rm -f src/Makefile
 
 makefiles:
