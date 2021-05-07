@@ -1,3 +1,4 @@
+INET_DSME ?= ../src/inet-dsme
 INET_PATH ?= ../../inet
 
 OPP_MAKEMAKE_ARGS = -f --deep -KINET_PROJ=$(INET_PATH) -DINET_IMPORT -I. -I$$\(INET_PROJ\)/src -L$$\(INET_PROJ\)/src -lINET$$\(D\) -KOMNETPP_CONFIGFILE=../../common/Makefile.inc -KMODESFILE=../modes.inc
@@ -43,7 +44,15 @@ REP ?= 0
 VECTOR_RECORDING ?= true
 
 run:
-	cd simulations && ../src/inet-dsme $(OPP_RUN_ARGS)
+	cd simulations && $(INET_DSME) $(OPP_RUN_ARGS)
+
+debug:
+	cd simulations && $(INET_DSME)_dbg $(OPP_RUN_ARGS)
+
+gdb:
+	cd simulations && gdb --args $(INET_DSME)_dbg $(OPP_RUN_ARGS)
+
+
 
 checkmakefiles:
 	@if [ ! -f src/Makefile ]; then \
